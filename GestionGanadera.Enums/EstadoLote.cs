@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GestionGanadera.Enums
-public enum EstadoLote
 {
-    EnEspera,
-    EnCorral,
-    Pesado,
-    Retirado
-}
+    public enum EstadoLote
+    {
+        EnEspera,
+        EnCorral,
+        Pesado,
+        Retirado
+    }
 }

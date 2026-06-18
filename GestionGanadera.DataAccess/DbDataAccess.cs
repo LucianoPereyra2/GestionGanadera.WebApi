@@ -18,6 +18,7 @@ namespace GestionGanadera.DataAccess
         public virtual DbSet<MovimientoLote> MovimientoLotes { get; set; }
         public virtual DbSet<Pesaje> Pesajes { get; set; }
         public virtual DbSet<Sector> Sectores { get; set; }
+        public virtual DbSet<Empleado> Empleados { get; set; }
         public DbDataAccess(DbContextOptions<DbDataAccess> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.Write);

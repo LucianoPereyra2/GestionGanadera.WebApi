@@ -1,4 +1,5 @@
-﻿using GestionGanadera.Enums;
+﻿using GestionGanadera.Abstractions;
+using GestionGanadera.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GestionGanadera.Entities
 {
-    public class Lote
+    public class Lote : IEntidad
     {
 
         public int Id { get; set; }

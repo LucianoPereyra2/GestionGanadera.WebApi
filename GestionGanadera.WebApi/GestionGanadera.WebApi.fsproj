@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Program.fs" />
+    <None Include="program.cs" />
+    <None Include="Controllers\Identity\AuthController.cs" />
+    <None Include="Controllers\Identity\RolesController.cs" />
+    <None Include="Controllers\Identity\UsersController.cs" />
     <None Include="Mapping\MovimientoLoteMappingProfile.cs" />
     <None Include="Mapping\PesajeMappingProfile.cs" />
     <None Include="Mapping\SectorMappingProfile.cs" />
@@ -18,7 +23,6 @@
     <None Include="Controllers\LotesController.cs" />
     <None Include="Controllers\ClientesControllers.cs" />
     <Compile Include="Controllers/WeatherForecastController.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +42,7 @@
     <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.2.1" />
     <PackageReference Include="System.Security.Permissions" Version="9.0.6" />
   </ItemGroup>
 

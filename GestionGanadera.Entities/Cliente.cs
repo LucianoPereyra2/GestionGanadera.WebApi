@@ -1,6 +1,8 @@
-﻿namespace GestionGanadera.Entities
+﻿using GestionGanadera.Abstractions;
+
+namespace GestionGanadera.Entities
 {
-    public class Cliente
+    public class Cliente : IEntidad
     {
         public int Id { get; set; }
         public string RazonSocial { get; set; } = null!;

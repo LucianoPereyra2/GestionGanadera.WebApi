@@ -1,4 +1,5 @@
-﻿using GestionGanadera.Enums;
+﻿using GestionGanadera.Abstractions;
+using GestionGanadera.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GestionGanadera.Entities
 {
-    public class Pesaje
+    public class Pesaje : IEntidad
     {
         public int Id { get; set; }
         public decimal PesoNeto { get; set; }
@@ -16,6 +17,6 @@ namespace GestionGanadera.Entities
         public string Observaciones { get; set; } = null!;
 
         public int LoteId { get; set; }
-        public Lote Lote { get; set; } = null!;
+        public virtual Lote Lote { get; set; } = null!;
     }
 }

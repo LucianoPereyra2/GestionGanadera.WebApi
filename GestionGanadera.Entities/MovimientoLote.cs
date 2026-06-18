@@ -1,4 +1,5 @@
-﻿using GestionGanadera.Enums;
+﻿using GestionGanadera.Abstractions;
+using GestionGanadera.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using static GestionGanadera.Entities.Lote;
 
 namespace GestionGanadera.Entities
 {
-    public class MovimientoLote
+    public class MovimientoLote : IEntidad
     {
         public int Id { get; set; }
         public EstadoLote EstadoAnterior { get; set; }
