@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GestionGanadera.WebApi.Controllers
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class MovimientosLoteController : ControllerBase
@@ -18,16 +17,19 @@ namespace GestionGanadera.WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ILogger<MovimientosLoteController> _logger;
         private readonly IApplication<MovimientoLote> _movimientoLote;
+        private readonly IApplication<Lote> _lote;
         private readonly IMapper _mapper;
 
         public MovimientosLoteController(
             ILogger<MovimientosLoteController> logger,
             UserManager<User> userManager,
             IApplication<MovimientoLote> movimientoLote,
+            IApplication<Lote> lote,
             IMapper mapper)
         {
             _logger = logger;
             _movimientoLote = movimientoLote;
+            _lote = lote;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -53,6 +55,8 @@ namespace GestionGanadera.WebApi.Controllers
         public async Task<IActionResult> Crear(MovimientoLoteRequestDto movimientoRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest();
+            if (_lote.GetById(movimientoRequestDto.LoteId) is null)
+                return BadRequest("El LoteId no existe.");
             var movimiento = _mapper.Map<MovimientoLote>(movimientoRequestDto);
             _movimientoLote.Save(movimiento);
             return Ok(movimiento.Id);
@@ -63,9 +67,11 @@ namespace GestionGanadera.WebApi.Controllers
         {
             if (!Id.HasValue) return BadRequest();
             if (!ModelState.IsValid) return BadRequest();
+            if (_lote.GetById(movimientoRequestDto.LoteId) is null)
+                return BadRequest("El LoteId no existe.");
             MovimientoLote movimientoBack = _movimientoLote.GetById(Id.Value);
             if (movimientoBack is null) return NotFound();
-            movimientoBack = _mapper.Map<MovimientoLote>(movimientoRequestDto);
+            _mapper.Map(movimientoRequestDto, movimientoBack);
             _movimientoLote.Save(movimientoBack);
             return Ok();
         }
@@ -81,4 +87,3 @@ namespace GestionGanadera.WebApi.Controllers
         }
     }
 }
-

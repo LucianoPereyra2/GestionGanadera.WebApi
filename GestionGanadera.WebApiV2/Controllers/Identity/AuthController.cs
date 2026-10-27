@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GestionGanadera.WebApi.Controllers.Identity
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
+    //[ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase

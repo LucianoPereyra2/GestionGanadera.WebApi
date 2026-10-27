@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GestionGanadera.WebApi.Controllers
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class PesajesController : ControllerBase
@@ -18,16 +18,19 @@ namespace GestionGanadera.WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ILogger<PesajesController> _logger;
         private readonly IApplication<Pesaje> _pesaje;
+        private readonly IApplication<Lote> _lote;
         private readonly IMapper _mapper;
 
         public PesajesController(
             ILogger<PesajesController> logger,
             UserManager<User> userManager,
             IApplication<Pesaje> pesaje,
+            IApplication<Lote> lote,
             IMapper mapper)
         {
             _logger = logger;
             _pesaje = pesaje;
+            _lote = lote;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -52,6 +55,8 @@ namespace GestionGanadera.WebApi.Controllers
         public async Task<IActionResult> Crear(PesajeRequestDto pesajeRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest();
+            if (_lote.GetById(pesajeRequestDto.LoteId) is null)
+                return BadRequest("El LoteId no existe.");
             var pesaje = _mapper.Map<Pesaje>(pesajeRequestDto);
             _pesaje.Save(pesaje);
             return Ok(pesaje.Id);
@@ -62,9 +67,11 @@ namespace GestionGanadera.WebApi.Controllers
         {
             if (!Id.HasValue) return BadRequest();
             if (!ModelState.IsValid) return BadRequest();
+            if (_lote.GetById(pesajeRequestDto.LoteId) is null)
+                return BadRequest("El LoteId no existe.");
             Pesaje pesajeBack = _pesaje.GetById(Id.Value);
             if (pesajeBack is null) return NotFound();
-            pesajeBack = _mapper.Map<Pesaje>(pesajeRequestDto);
+            _mapper.Map(pesajeRequestDto, pesajeBack);
             _pesaje.Save(pesajeBack);
             return Ok();
         }

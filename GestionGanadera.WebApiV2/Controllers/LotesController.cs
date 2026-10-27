@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GestionGanadera.WebApi.Controllers
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class LotesController : ControllerBase
@@ -18,16 +18,19 @@ namespace GestionGanadera.WebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ILogger<LotesController> _logger;
         private readonly IApplication<Lote> _lote;
+        private readonly IApplication<Cliente> _cliente;
         private readonly IMapper _mapper;
 
         public LotesController(
             ILogger<LotesController> logger,
             UserManager<User> userManager,
             IApplication<Lote> lote,
+            IApplication<Cliente> cliente,
             IMapper mapper)
         {
             _logger = logger;
             _lote = lote;
+            _cliente = cliente;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -52,23 +55,25 @@ namespace GestionGanadera.WebApi.Controllers
         public async Task<IActionResult> Crear(LoteRequestDto loteRequestDto)
         {
             if (!ModelState.IsValid) return BadRequest();
+            if (_cliente.GetById(loteRequestDto.ClienteId) is null)
+                return BadRequest("El ClienteId no existe.");
             var lote = _mapper.Map<Lote>(loteRequestDto);
             _lote.Save(lote);
             return Ok(lote.Id);
         }
-
         [HttpPut]
         public async Task<IActionResult> Editar(int? Id, LoteRequestDto loteRequestDto)
         {
             if (!Id.HasValue) return BadRequest();
             if (!ModelState.IsValid) return BadRequest();
+            if (_cliente.GetById(loteRequestDto.ClienteId) is null)
+                return BadRequest("El ClienteId no existe.");
             Lote loteBack = _lote.GetById(Id.Value);
             if (loteBack is null) return NotFound();
-            loteBack = _mapper.Map<Lote>(loteRequestDto);
+            _mapper.Map(loteRequestDto, loteBack);
             _lote.Save(loteBack);
             return Ok();
         }
-
         [HttpDelete]
         public async Task<IActionResult> Borrar(int? Id)
         {

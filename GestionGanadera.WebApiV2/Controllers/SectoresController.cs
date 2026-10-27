@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GestionGanadera.WebApi.Controllers
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class SectoresController : ControllerBase
