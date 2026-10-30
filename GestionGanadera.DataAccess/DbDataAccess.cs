@@ -19,6 +19,7 @@ namespace GestionGanadera.DataAccess
         public virtual DbSet<Pesaje> Pesajes { get; set; }
         public virtual DbSet<Sector> Sectores { get; set; }
         public virtual DbSet<Empleado> Empleados { get; set; }
+        public virtual DbSet<EspecieAnimal> EspeciesAnimales { get; set; }
         public DbDataAccess(DbContextOptions<DbDataAccess> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.Write);
@@ -27,6 +28,18 @@ namespace GestionGanadera.DataAccess
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+            modelBuilder.Entity<Pesaje>()
+                .HasOne(p => p.Lote)
+                .WithMany()
+                .HasForeignKey(p => p.LoteId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<MovimientoLote>()
+                .HasOne(m => m.lote)
+                .WithMany()
+                .HasForeignKey(m => m.LoteId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GestionGanadera.WebApi.Controllers
 {
@@ -76,8 +77,15 @@ namespace GestionGanadera.WebApi.Controllers
             if (!Id.HasValue) return BadRequest();
             Cliente clienteBack = _cliente.GetById(Id.Value);
             if (clienteBack is null) return NotFound();
-            _cliente.Delete(clienteBack.Id);
-            return Ok();
+            try
+            {
+                _cliente.Delete(clienteBack.Id);
+                return Ok();
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict("No se puede borrar el cliente porque tiene lotes asociados.");
+            }
         }
     }
 }

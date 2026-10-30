@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GestionGanadera.WebApi.Controllers
 {
@@ -19,6 +20,7 @@ namespace GestionGanadera.WebApi.Controllers
         private readonly ILogger<LotesController> _logger;
         private readonly IApplication<Lote> _lote;
         private readonly IApplication<Cliente> _cliente;
+        private readonly IApplication<EspecieAnimal> _especie;
         private readonly IMapper _mapper;
 
         public LotesController(
@@ -26,11 +28,13 @@ namespace GestionGanadera.WebApi.Controllers
             UserManager<User> userManager,
             IApplication<Lote> lote,
             IApplication<Cliente> cliente,
+            IApplication<EspecieAnimal> especie,
             IMapper mapper)
         {
             _logger = logger;
             _lote = lote;
             _cliente = cliente;
+            _especie = especie;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -41,6 +45,7 @@ namespace GestionGanadera.WebApi.Controllers
         {
             return Ok(_mapper.Map<IList<LoteResponseDto>>(_lote.GetAll()));
         }
+
         [HttpGet]
         [Route("ById")]
         public async Task<IActionResult> ById(int? Id)
@@ -57,10 +62,13 @@ namespace GestionGanadera.WebApi.Controllers
             if (!ModelState.IsValid) return BadRequest();
             if (_cliente.GetById(loteRequestDto.ClienteId) is null)
                 return BadRequest("El ClienteId no existe.");
+            if (_especie.GetById(loteRequestDto.EspecieAnimalId) is null)
+                return BadRequest("El EspecieAnimalId no existe.");
             var lote = _mapper.Map<Lote>(loteRequestDto);
             _lote.Save(lote);
             return Ok(lote.Id);
         }
+
         [HttpPut]
         public async Task<IActionResult> Editar(int? Id, LoteRequestDto loteRequestDto)
         {
@@ -68,21 +76,30 @@ namespace GestionGanadera.WebApi.Controllers
             if (!ModelState.IsValid) return BadRequest();
             if (_cliente.GetById(loteRequestDto.ClienteId) is null)
                 return BadRequest("El ClienteId no existe.");
+            if (_especie.GetById(loteRequestDto.EspecieAnimalId) is null)
+                return BadRequest("El EspecieAnimalId no existe.");
             Lote loteBack = _lote.GetById(Id.Value);
             if (loteBack is null) return NotFound();
             _mapper.Map(loteRequestDto, loteBack);
             _lote.Save(loteBack);
             return Ok();
         }
+
         [HttpDelete]
         public async Task<IActionResult> Borrar(int? Id)
         {
             if (!Id.HasValue) return BadRequest();
             Lote loteBack = _lote.GetById(Id.Value);
             if (loteBack is null) return NotFound();
-            _lote.Delete(loteBack.Id);
-            return Ok();
+            try
+            {
+                _lote.Delete(loteBack.Id);
+                return Ok();
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict("No se puede borrar el lote porque tiene registros asociados (pesajes o movimientos).");
+            }
         }
     }
 }
-

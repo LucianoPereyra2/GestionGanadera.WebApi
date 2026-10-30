@@ -11,7 +11,7 @@ namespace GestionGanadera.Application.Dtos.Lote
     {
         public string Codigo { get; set; } = null!;
         public int CantidadCabezas { get; set; }
-        public EspecieAnimal Especie { get; set; }
+        public int EspecieAnimalId { get; set; }
         public string Categoria { get; set; } = null!;
         public EstadoLote Estado { get; set; }
         public DateTime FechaHoraIngreso { get; set; }

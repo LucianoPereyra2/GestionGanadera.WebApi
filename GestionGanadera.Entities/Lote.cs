@@ -14,11 +14,13 @@ namespace GestionGanadera.Entities
         public int Id { get; set; }
         public string Codigo { get; set; } = null!;
         public int CantidadCabezas { get; set; }
-        public EspecieAnimal Especie { get; set; }
         public string Categoria { get; set; } = null!;
+        public int EspecieAnimalId { get; set; }
+        public virtual EspecieAnimal EspecieAnimal { get; set; } = null!;
         public EstadoLote Estado { get; set; }
         public DateTime FechaHoraIngreso { get; set; }
         public DateTime FechaHoraEgreso { get; set; }
+        public virtual Cliente Cliente { get; set; } = null!;
         public int ClienteId { get; set; }
     }
 }

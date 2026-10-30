@@ -89,6 +89,23 @@ namespace GestionGanadera.WebApiV2.Migrations
                     b.ToTable("Empleados");
                 });
 
+            modelBuilder.Entity("GestionGanadera.Entities.EspecieAnimal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EspeciesAnimales");
+                });
+
             modelBuilder.Entity("GestionGanadera.Entities.Lote", b =>
                 {
                     b.Property<int>("Id")
@@ -111,7 +128,7 @@ namespace GestionGanadera.WebApiV2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Especie")
+                    b.Property<int>("EspecieAnimalId")
                         .HasColumnType("int");
 
                     b.Property<int>("Estado")
@@ -124,6 +141,10 @@ namespace GestionGanadera.WebApiV2.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("EspecieAnimalId");
 
                     b.ToTable("Lotes");
                 });
@@ -431,6 +452,25 @@ namespace GestionGanadera.WebApiV2.Migrations
                     b.ToTable("Sectores");
                 });
 
+            modelBuilder.Entity("GestionGanadera.Entities.Lote", b =>
+                {
+                    b.HasOne("GestionGanadera.Entities.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GestionGanadera.Entities.EspecieAnimal", "EspecieAnimal")
+                        .WithMany()
+                        .HasForeignKey("EspecieAnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("EspecieAnimal");
+                });
+
             modelBuilder.Entity("GestionGanadera.Entities.MicrosoftIdentity.RoleClaim", b =>
                 {
                     b.HasOne("GestionGanadera.Entities.MicrosoftIdentity.Role", null)
@@ -487,7 +527,7 @@ namespace GestionGanadera.WebApiV2.Migrations
                     b.HasOne("GestionGanadera.Entities.Lote", "lote")
                         .WithMany()
                         .HasForeignKey("LoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("lote");
@@ -498,7 +538,7 @@ namespace GestionGanadera.WebApiV2.Migrations
                     b.HasOne("GestionGanadera.Entities.Lote", "Lote")
                         .WithMany()
                         .HasForeignKey("LoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Lote");
