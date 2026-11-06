@@ -8,7 +8,7 @@ namespace GestionGanadera.WebApi.Mapping
     {
         public MovimientoLoteMappingProfile()
         {
-            CreateMap<MovimientoLote, MovimientoLoteResponseDto>();
+            CreateMap<MovimientoLote, MovimientoLoteResponseDto>().ForMember(dest=>dest.CodigoLote,opt=>opt.MapFrom(src=>src.lote.Codigo));
             CreateMap<MovimientoLoteRequestDto, MovimientoLote>();
         }
     }

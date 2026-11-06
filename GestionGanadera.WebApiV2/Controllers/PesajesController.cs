@@ -39,7 +39,8 @@ namespace GestionGanadera.WebApi.Controllers
         [Route("All")]
         public async Task<IActionResult> All()
         {
-            return Ok(_mapper.Map<IList<PesajeResponseDto>>(_pesaje.GetAll()));
+            var lista = _pesaje.GetAll();
+            return Ok(_mapper.Map<IList<PesajeResponseDto>>(lista));
         }
         [HttpGet]
         [Route("ById")]

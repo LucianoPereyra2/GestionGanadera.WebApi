@@ -15,6 +15,6 @@ namespace GestionGanadera.Application.Dtos.MovimientoLote
         public DateTime FechaHora { get; set; }
         public string Observaciones { get; set; } = null!;
         public string PersonaResponsable { get; set; } = null!;
-        public int LoteId { get; set; }
+        public int CodigoLote { get; set; }
     }
 }

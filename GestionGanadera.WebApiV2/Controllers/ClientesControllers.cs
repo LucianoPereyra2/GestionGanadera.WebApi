@@ -66,11 +66,10 @@ namespace GestionGanadera.WebApi.Controllers
             if (!ModelState.IsValid) return BadRequest();
             Cliente clienteBack = _cliente.GetById(Id.Value);
             if (clienteBack is null) return NotFound();
-            clienteBack = _mapper.Map<Cliente>(clienteRequestDto);
+            _mapper.Map(clienteRequestDto, clienteBack);
             _cliente.Save(clienteBack);
             return Ok();
         }
-
         [HttpDelete]
         public async Task<IActionResult> Borrar(int? Id)
         {

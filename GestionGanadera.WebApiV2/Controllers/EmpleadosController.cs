@@ -57,11 +57,10 @@ namespace GestionGanadera.WebApiV2.Controllers
             if (!ModelState.IsValid) return BadRequest();
             Empleado empleadoBack = _empleado.GetById(Id.Value);
             if (empleadoBack is null) return NotFound();
-            empleadoBack = _mapper.Map<Empleado>(empleadoRequestDto);
+            _mapper.Map(empleadoRequestDto, empleadoBack);
             _empleado.Save(empleadoBack);
             return Ok();
         }
-
         [HttpDelete]
         public async Task<IActionResult> Borrar(int? Id)
         {

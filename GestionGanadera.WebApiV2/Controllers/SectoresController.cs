@@ -65,11 +65,10 @@ namespace GestionGanadera.WebApi.Controllers
             if (!ModelState.IsValid) return BadRequest();
             Sector sectorBack = _sector.GetById(Id.Value);
             if (sectorBack is null) return NotFound();
-            sectorBack = _mapper.Map<Sector>(sectorRequestDto);
+            _mapper.Map(sectorRequestDto, sectorBack);
             _sector.Save(sectorBack);
             return Ok();
         }
-
         [HttpDelete]
         public async Task<IActionResult> Borrar(int? Id)
         {

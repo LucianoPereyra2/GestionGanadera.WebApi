@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace GestionGanadera.Enums
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum EstadoLote
     {
-        EnEspera,
-        [Display(Name ="En Corral")]
-        EnCorral,
+        Espera,
+        Corral,
         Pesado,
         Retirado
     }
