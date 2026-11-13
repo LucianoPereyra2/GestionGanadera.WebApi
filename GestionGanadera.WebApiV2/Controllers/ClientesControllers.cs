@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestionGanadera.WebApi.Controllers
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase
@@ -31,6 +31,21 @@ namespace GestionGanadera.WebApi.Controllers
             _cliente = cliente;
             _mapper = mapper;
             _userManager = userManager;
+        }
+
+        [HttpGet]
+        [Route("GetSelectList")]
+        public ActionResult<IEnumerable<ClienteSelectListDto>> GetSelectList()
+        {
+            try
+            {
+                var list = _mapper.Map<IList<ClienteSelectListDto>>(_cliente.GetAll().ToList());
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return Conflict();
+            }
         }
 
         [HttpGet]

@@ -10,6 +10,7 @@ namespace GestionGanadera.WebApi.Mapping
         {
             CreateMap<Lote, LoteResponseDto>();
             CreateMap<LoteRequestDto, Lote>();
+            CreateMap<Lote, LoteSelectListDto>().ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Codigo));
         }
     }
 }

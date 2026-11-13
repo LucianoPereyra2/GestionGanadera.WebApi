@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GestionGanadera.Application;
+using GestionGanadera.Application.Dtos.Cliente;
 using GestionGanadera.Application.Dtos.Lote;
 using GestionGanadera.Entities;
 using GestionGanadera.Entities.MicrosoftIdentity;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GestionGanadera.Application.Dtos.SelectList;
+using GestionGanadera.Enums;
 
 namespace GestionGanadera.WebApi.Controllers
 {
@@ -44,6 +47,31 @@ namespace GestionGanadera.WebApi.Controllers
         public async Task<IActionResult> All()
         {
             return Ok(_mapper.Map<IList<LoteResponseDto>>(_lote.GetAll()));
+        }
+
+        [HttpGet]
+        [Route("GetEstadoSelectList")]
+        public ActionResult<IEnumerable<SelectListDto>> GetEstadoSelectList()
+        {
+            var list = Enum.GetValues<EstadoLote>()
+                .Select(e => new SelectListDto { Id = (int)e, Nombre = e.ToString() })
+                .ToList();
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [Route("GetSelectList")]
+        public ActionResult<IEnumerable<LoteSelectListDto>> GetSelectList()
+        {
+            try
+            {
+                var list = _mapper.Map<IList<LoteSelectListDto>>(_lote.GetAll().ToList());
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return Conflict();
+            }
         }
 
         [HttpGet]

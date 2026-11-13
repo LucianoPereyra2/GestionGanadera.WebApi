@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using GestionGanadera.Application.Dtos.SelectList;
+using GestionGanadera.Enums;
 
 namespace GestionGanadera.WebApi.Controllers
 {
@@ -42,6 +44,17 @@ namespace GestionGanadera.WebApi.Controllers
             var lista = _pesaje.GetAll();
             return Ok(_mapper.Map<IList<PesajeResponseDto>>(lista));
         }
+
+        [HttpGet]
+        [Route("GetTipoPesajeSelectList")]
+        public ActionResult<IEnumerable<SelectListDto>> GetTipoPesajeSelectList()
+        {
+            var list = Enum.GetValues<TipoPesaje>()
+                .Select(e => new SelectListDto { Id = (int)e, Nombre = e.ToString() })
+                .ToList();
+            return Ok(list);
+        }
+
         [HttpGet]
         [Route("ById")]
         public async Task<IActionResult> ById(int? Id)

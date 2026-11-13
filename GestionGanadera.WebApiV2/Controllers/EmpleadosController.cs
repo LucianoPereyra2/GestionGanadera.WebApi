@@ -2,10 +2,13 @@
 using GestionGanadera.Application;
 using GestionGanadera.Application.Dtos.Empleado;
 using GestionGanadera.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionGanadera.WebApiV2.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class EmpleadosController : ControllerBase

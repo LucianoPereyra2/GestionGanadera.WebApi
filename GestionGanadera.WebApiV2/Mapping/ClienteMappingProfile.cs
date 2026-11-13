@@ -10,6 +10,7 @@ namespace GestionGanadera.WebApi.Mapping
         {
             CreateMap<Cliente, ClienteResponseDto>();
             CreateMap<ClienteRequestDto, Cliente>();
+            CreateMap<Cliente, ClienteSelectListDto>().ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.RazonSocial));
         }
     }
 }

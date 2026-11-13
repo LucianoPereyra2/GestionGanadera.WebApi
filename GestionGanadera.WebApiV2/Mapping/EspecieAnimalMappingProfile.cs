@@ -9,6 +9,7 @@ namespace GestionGanadera.WebApi.Mapping
         public EspecieAnimalMappingProfile()
         {
             CreateMap<EspecieAnimal, EspecieAnimalResponseDto>();
+            CreateMap<EspecieAnimal, EspecieAnimalSelectListDto>();
             CreateMap<EspecieAnimalRequestDto, EspecieAnimal>();
         }
     }

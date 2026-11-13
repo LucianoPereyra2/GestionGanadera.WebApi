@@ -41,6 +41,21 @@ namespace GestionGanadera.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("GetSelectList")]                
+        public ActionResult<IEnumerable<EspecieAnimalSelectListDto>> GetSelectList()
+        {
+            try
+            {
+                var list = _mapper.Map<IList<EspecieAnimalSelectListDto>>(_especie.GetAll().ToList());
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return Conflict();
+            }
+        }
+
+        [HttpGet]
         [Route("ById")]
         public async Task<IActionResult> ById(int? Id)
         {
